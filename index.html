@@ -149,7 +149,7 @@
         alt="How To Launch a Successful Print-on-Demand Business Audiobook Cover"
         class="cover"
       >
-      <div class="badge">10,000+ minutes listened on Spotify</div>
+      <div class="badge">7,000+ minutes listened on Spotify</div>
     </div>
 
     <p>
@@ -170,7 +170,7 @@
     </ul>
 
     <p>
-      Already listened to for over 10,000 minutes on Spotify and purchased in the United States through Apple Books and libraries.
+      Already listened to for over 7,000 minutes on Spotify and purchased in the United States through Apple Books and libraries.
     </p>
 
     <div class="buttons">
@@ -210,29 +210,27 @@
     </footer>
   </div>
 
-  <!-- CTA click tracking (GA4) -->
+  <!-- CTA click tracking (GA4 – split by platform) -->
   <script>
     document.addEventListener("click", function (e) {
       const link = e.target.closest("a[data-cta]");
       if (!link) return;
 
-      const cta = link.getAttribute("data-cta");
+      const cta = link.getAttribute("data-cta"); 
       const url = link.getAttribute("href");
       const target = link.getAttribute("target") || "_self";
 
-      // Send event to GA4
+      const eventName = "cta_" + cta;
+
       if (typeof gtag === "function") {
-        gtag("event", "cta_click", {
-          cta_name: cta,           // spotify / apple_books / hoopla / amazon_print
-          link_url: url,           // destination
+        gtag("event", eventName, {
+          platform: cta,
+          link_url: url,
           outbound: true
         });
       }
 
-      // Small delay to ensure the event is sent before leaving the page
-      // (especially useful on fast clicks + some browsers)
       if (target === "_blank") {
-        // open in new tab after a tiny delay
         e.preventDefault();
         setTimeout(function () {
           window.open(url, "_blank", "noopener");
